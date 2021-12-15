@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASEURL = "https://jsonplaceholder.typicode.com/"
+const val BASEURL = "https://jsonplaceholder.typicode.scom/"
 
 class MainActivity2 : AppCompatActivity() {
     lateinit var textView: TextView;
@@ -32,10 +33,11 @@ class MainActivity2 : AppCompatActivity() {
                 .build().create(MyApi::class.java)
 
 
-        try {
 
-            lifecycleScope.launch(Dispatchers.IO) {
-                Log.d("isReepeat", "YES")
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            lifecycleScope.launch (mCoroutineExceptionHandler){
+
 
 // awaitResponse gives the list of response.
 //           val data= api.getComments().awaitResponse()
@@ -55,17 +57,25 @@ class MainActivity2 : AppCompatActivity() {
                     }
 
 
-                }else
-                {
+                } else {
                     Toast.makeText(this@MainActivity2, "Some Error!", Toast.LENGTH_SHORT).show()
                     progressDialog.dismiss()
 
                 }
+
             }
 
-        } catch (E: Exception) {
-            throw  E
+
+
         }
 
+
     }
+
+    private val mCoroutineExceptionHandler =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+
+            Toast.makeText(this@MainActivity2, "Some Error!", Toast.LENGTH_SHORT).show()
+
+        }
 }

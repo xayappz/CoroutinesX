@@ -30,16 +30,40 @@ class MainActivity : AppCompatActivity() {
 
         //lifecycleScope will work until activity destroyed
 
+
+
+        //launch does not return anything
         lifecycleScope.launch(Dispatchers.IO) {
             Log.d(TAG, "running all time until App is closed")
-
             val time = measureTimeMillis {
+
+                //bad approach to launch many tasks and use join
+//                var result1: String?=null
+//                var result2: String?=null
+//                val req1 = launch { result1 = doNetworkCall() }
+//
+//                val req2 = launch { result2 = doNetworkCall2() }
+//
+//                req1.join()
+//                req2.join()
+//
+//
+//                Log.d("REQUEST1 ", result1.toString())
+//                Log.d("REQUEST2 ",  result2.toString())
+
+//
+
+                //ideal approach async returns response
                 val req1 = async { doNetworkCall() }
 
                 val req2 = async { doNetworkCall2() }
 
-                Log.d("REQUEST1 ", "${req1.await()}")
-                Log.d("REQUEST2 ", "${req2.await()}")
+
+
+
+//await is used to show response and execute the task
+                Log.d("REQUEST1 ",  req1.await())
+                Log.d("REQUEST2 ", req2.await())
 
 
             }
@@ -96,6 +120,7 @@ class MainActivity : AppCompatActivity() {
     //suspend fn can only be called from suspend fn or coroutine
     private suspend fun doNetworkCall(): String {
 
+        Log.d("SSSSS","SSSS")
         delay(2000L)
         return "This is the response"
     }
