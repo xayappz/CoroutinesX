@@ -1,6 +1,6 @@
 # CoroutinesX
 
-Github sample project using asynchronous programming with Kotlin Coroutines.
+Project using asynchronous programming with Kotlin Coroutines.
 
 This project uses the following stack:
 
